@@ -1,0 +1,18 @@
+<div class="sidebar">
+  <div>
+    <div class="sidebar__header">
+      <h1 class="sidebar__title">Team Manager</h1>
+      <p class="sidebar__subtitle">Organize your team</p>
+    </div>
+
+    <div class="card flex justify-content-center">
+      <p-panelMenu [model]="items" [style]="{ width: '300px' }"></p-panelMenu>
+    </div>
+  </div>
+  <div class="sidebar__footer">
+    <p-panelMenu
+      [model]="footerMenu"
+      [style]="{ width: '300px' }"
+    ></p-panelMenu>
+  </div>
+</div>

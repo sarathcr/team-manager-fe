@@ -1,0 +1,14 @@
+.dashboard-layout {
+  display: grid;
+  grid-gap: 2em;
+  grid-template-columns: 1fr 4fr;
+  height: 100%;
+  background: #f9fafe;
+  padding: 30px;
+  //   &__sidebar {
+  //     @include custom-box-shadow;
+  //   }
+  //   &__content {
+  //     // @include inset-custom-box-shadow;
+  //   }
+}

@@ -1,0 +1,18 @@
+<div class="file-upload card flex justify-content-center">
+  <p class="file-upload__labelText">
+    @if (uploadedFile) { {{ uploadedFile.name }} } @else {Click or drop here to
+    upload file}
+  </p>
+
+  <input
+    class="file-upload__input"
+    type="file"
+    #fileDropRef
+    id="fileDropRef"
+    multiple
+    (change)="onFileLoadedFromInput($event.target)"
+  />
+  <div class="file-upload__button" (click)="onFileUpload()">
+    <span class="pi pi-upload"></span>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+@import "../../../../styles/styles";
+.sidebar {
+  height: 100%;
+  border: 1px solid rgba(36, 36, 36, 0.1);
+  border-radius: 12px;
+  background: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  &__header {
+    margin-bottom: 25px;
+  }
+  &__title {
+    font-size: font-size(h6-font-size);
+    color: color(primary);
+  }
+  &__subtitle {
+    font-size: font-size(sub-title);
+    color: color(sub-title);
+    font-weight: 700;
+  }
+}

@@ -1,0 +1,26 @@
+@import "../../variables//_variable-master";
+.p-panelmenu
+  .p-panelmenu-header
+  .p-panelmenu-header-content
+  .p-panelmenu-header-action {
+  padding: 1rem;
+  &:hover {
+    background-color: rgba(pantone(iris-blue), 0.2);
+    color: color(primary);
+    border-radius: 10px;
+  }
+}
+.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
+  background: white;
+  border: none;
+}
+
+.p-menuitem-link-active {
+  background-color: rgba(pantone(iris-blue), 0.2);
+  color: color(primary);
+  border-radius: 10px;
+}
+
+.p-component {
+  font-family: font-family(default);
+}

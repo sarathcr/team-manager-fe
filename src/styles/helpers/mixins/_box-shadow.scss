@@ -1,0 +1,7 @@
+@mixin custom-box-shadow {
+  box-shadow: -3px -3px 7px #ffffff, 3px 3px 5px #ceced1;
+}
+
+@mixin inset-custom-box-shadow {
+  box-shadow: inset -3px -3px 7px #ffffff, 3px 3px 5px #ceced1;
+}
