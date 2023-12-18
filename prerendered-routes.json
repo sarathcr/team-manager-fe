@@ -1,0 +1,8 @@
+{
+  "routes": [
+    "/dashboard",
+    "/dashboard/time-log",
+    "/login",
+    "/time-log"
+  ]
+}
