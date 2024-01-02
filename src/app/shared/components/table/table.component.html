@@ -1,0 +1,43 @@
+<p-table
+  class="table"
+  styleClass="p-datatable-gridlines"
+  [tableStyle]="{ 'min-width': '50rem' }"
+>
+  <ng-template pTemplate="caption"> Header </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>SI.no</th>
+      <th>Department</th>
+      <!-- @for (item of tableData?.data; track $index) {
+      <th>{{ item.department }}</th>
+      } -->
+
+      <th>Employee Code</th>
+      <th>Employee Name</th>
+      @for (item of getDateList(); track $index) {
+      <th>
+        <tr rowspan="2">
+          {{
+            item
+          }}
+        </tr>
+        <tr rowspan="2">
+          <th colspan="1">Day</th>
+          <th colspan="1">Hours</th>
+        </tr>
+      </th>
+      } @empty {
+      <th>Date</th>
+      }
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product>
+    <tr>
+      <td>{{ product.code }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.category }}</td>
+      <td>{{ product.quantity }}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary"> Footer </ng-template>
+</p-table>
