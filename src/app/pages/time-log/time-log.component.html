@@ -1,4 +1,7 @@
 <app-page-title [title]="'Time log'"></app-page-title>
 <div class="file-upload-wrapper">
   <app-file-upload (onUpload)="onUpload($event)"></app-file-upload>
+  <div class="time-log__table">
+    <app-table [tableData]="tableData"></app-table>
+  </div>
 </div>

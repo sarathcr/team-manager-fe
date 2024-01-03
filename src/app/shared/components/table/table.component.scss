@@ -1,0 +1,20 @@
+@import "../../../../styles/variables/_variable-master";
+
+.table {
+  background: pantone(white);
+  ::ng-deep {
+    .p-datatable-header,
+    .p-datatable-footer {
+      background-color: pantone(white);
+    }
+    th {
+      tr {
+        border: 1px solid black;
+      }
+    }
+    .p-datatable-wrapper {
+      height: calc(100vh - 300px);
+      // min-height: calc(100vh - 300px);
+    }
+  }
+}

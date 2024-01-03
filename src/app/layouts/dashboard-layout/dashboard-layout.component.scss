@@ -1,14 +1,17 @@
 .dashboard-layout {
-  display: grid;
-  grid-gap: 2em;
-  grid-template-columns: 1fr 4fr;
+  display: flex;
+  gap: 2em;
+  width: 100%;
   height: 100%;
   background: #f9fafe;
   padding: 30px;
-  //   &__sidebar {
-  //     @include custom-box-shadow;
-  //   }
-  //   &__content {
-  //     // @include inset-custom-box-shadow;
-  //   }
+
+  &__sidebar {
+    max-width: 275px;
+    flex-shrink: 0;
+  }
+  &__content {
+    flex-basis: 100%;
+    width: calc(100% - 300px);
+  }
 }
