@@ -1,5 +1,6 @@
 <p-table
   class="table"
+  [value]="tableData ? tableData.data : []"
   styleClass="p-datatable-gridlines"
   [tableStyle]="{ 'min-width': '50rem' }"
 >
@@ -8,17 +9,13 @@
     <tr>
       <th>SI.no</th>
       <th>Department</th>
-      <!-- @for (item of tableData?.data; track $index) {
-      <th>{{ item.department }}</th>
-      } -->
-
       <th>Employee Code</th>
       <th>Employee Name</th>
-      @for (item of getDateList(); track $index) {
+      @for (item of getDateList();let i = $index; track i) {
       <th>
         <tr rowspan="2">
           {{
-            item
+            item.date
           }}
         </tr>
         <tr rowspan="2">
@@ -31,12 +28,21 @@
       }
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-product>
+  <ng-template pTemplate="body" let-data>
+    <!-- @for (item of tableData?.data;let i = $index; track i) { -->
     <tr>
-      <td>{{ product.code }}</td>
-      <td>{{ product.name }}</td>
-      <td>{{ product.category }}</td>
-      <td>{{ product.quantity }}</td>
+      <td>{{ incrementIndex() }}</td>
+      <td>{{ data?.department }}</td>
+      <td>{{ data?.employeeCode }}</td>
+      <td>{{ data?.employeeName }}</td>
+      @for (item of getDayAndDuration(data?.dateList);let i = $index; track i) {
+      <td>
+        <tr>
+          <td>{{ item.day }}</td>
+          <td>{{ item.duration }}</td>
+        </tr>
+      </td>
+      }
     </tr>
   </ng-template>
   <ng-template pTemplate="summary"> Footer </ng-template>
