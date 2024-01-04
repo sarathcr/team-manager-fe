@@ -1,3 +1,4 @@
+@use "sass:math";
 @import "../../../../styles/variables/_variable-master";
 
 .table {
@@ -12,14 +13,55 @@
         border: 1px solid black;
       }
     }
+    tr td {
+      font-weight: 800 !important;
+      font-size: 14px;
+    }
     .p-datatable-wrapper {
       // height: calc(100vh - 300px);
       height: calc(100vh - 287px);
       background-color: pantone(white);
       // min-height: calc(100vh - 300px);
     }
-    .day-hours-cell td {
-      border: 1px solid #ccc; /* Customize the border style as needed */
+  }
+  &-head {
+    &_p-10 {
+      padding: 10px;
+      flex: 0 0 math.div(100%, 3);
+      text-align: center;
+    }
+
+    &_date {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 10px;
+      text-align: center;
+    }
+    &_center {
+      justify-content: center;
+    }
+    &_sub-head {
+      margin-top: 5px;
+      display: flex;
+      // justify-content: space-evenly;
+      // display: grid;
+      // grid-template-columns: 1fr 1fr 2fr;
+      // grid-gap: 1rem;
+      // padding: 10px;
+    }
+    // &_justify-center {
+    //   padding: 10px 5px;
+    // }
+  }
+  &-cell {
+    &_absent {
+      background-color: rgba(color(absent), 0.5);
+    }
+    &_lc {
+      background-color: pantone(red);
     }
   }
+}
+
+.p-0 {
+  padding: 0;
 }
