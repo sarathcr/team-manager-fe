@@ -3,11 +3,14 @@
   [value]="tableData ? tableData.data : []"
   styleClass="p-datatable-gridlines"
   [tableStyle]="{ 'min-width': '50rem' }"
+  [scrollable]="true"
+  scrollDirection="both"
+  [paginator]="tableData ? true : false"
+  [rows]="10"
 >
   <ng-template pTemplate="caption"> Header </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <th>SI.no</th>
       <th>Department</th>
       <th>Employee Code</th>
       <th>Employee Name</th>
@@ -18,7 +21,7 @@
             item.date
           }}
         </tr>
-        <tr rowspan="2">
+        <tr rowspan="2" class="day-hours-cell">
           <th colspan="1">Day</th>
           <th colspan="1">Hours</th>
         </tr>
@@ -29,14 +32,12 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-data>
-    <!-- @for (item of tableData?.data;let i = $index; track i) { -->
     <tr>
-      <td>{{ incrementIndex() }}</td>
       <td>{{ data?.department }}</td>
       <td>{{ data?.employeeCode }}</td>
       <td>{{ data?.employeeName }}</td>
       @for (item of getDayAndDuration(data?.dateList);let i = $index; track i) {
-      <td>
+      <td colspan="1" class="day-hours-cell">
         <tr>
           <td>{{ item.day }}</td>
           <td>{{ item.duration }}</td>
@@ -45,5 +46,9 @@
       }
     </tr>
   </ng-template>
-  <ng-template pTemplate="summary"> Footer </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td>Please upload the attendance sheet in xlsx or csv format.</td>
+    </tr>
+  </ng-template>
 </p-table>

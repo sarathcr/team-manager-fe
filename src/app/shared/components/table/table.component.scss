@@ -13,8 +13,13 @@
       }
     }
     .p-datatable-wrapper {
-      height: calc(100vh - 300px);
+      // height: calc(100vh - 300px);
+      height: calc(100vh - 287px);
+      background-color: pantone(white);
       // min-height: calc(100vh - 300px);
+    }
+    .day-hours-cell td {
+      border: 1px solid #ccc; /* Customize the border style as needed */
     }
   }
 }
