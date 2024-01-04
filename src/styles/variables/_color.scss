@@ -40,6 +40,7 @@ $pantone: (
   cerulean: #007eae,
   blue-bayoux: #68777d,
   navy-blue: #263c7a,
+  red: #ff2c2c,
 );
 
 /*=====================================
@@ -59,6 +60,7 @@ $color: (
   dark-blue: map-get($pantone, blue-lagoon),
   night-rider: map-get($pantone, night-rider),
   sub-title: map-get($pantone, blue-bayoux),
+  absent: map-get($pantone, cinnabar),
 );
 
 /**

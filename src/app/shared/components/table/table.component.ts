@@ -3,11 +3,12 @@ import moment from 'moment';
 import { TableModule } from 'primeng/table';
 import { TableDataModel } from '../../models/table-data.model';
 import { log } from 'console';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule],
+  imports: [TableModule, CommonModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
@@ -63,16 +64,28 @@ export class TableComponent implements OnInit {
 
   public getDayAndDuration(
     dateList: any[]
-  ): { day: string; duration: string }[] {
+  ): { status: string; duration: string; remarks: string }[] {
     if (!dateList || dateList.length === 0) {
       return [];
     }
 
-    const result: { day: string; duration: string }[] = [];
+    const result: { status: string; duration: string; remarks: string }[] = [];
 
     dateList.forEach((dateEntry) => {
       let dayOfWeek = '';
       let duration = '';
+      let remarks = '';
+
+      const referenceTime = '10';
+
+      const IN_TIME = moment.utc(dateEntry.inTime).format('HH:mm');
+      const REFE_TIME = moment.utc(referenceTime, 'HH').format('HH:mm');
+
+      const isGreaterThan10AM = IN_TIME > REFE_TIME;
+
+      if (isGreaterThan10AM) {
+        remarks = 'LC';
+      }
 
       if (
         dateEntry.status === 'Present' &&
@@ -81,11 +94,6 @@ export class TableComponent implements OnInit {
       ) {
         const inTime = moment.utc(dateEntry.inTime, 'YYYY-MM-DDTHH:mm:ss');
         const outTime = moment.utc(dateEntry.outTime, 'YYYY-MM-DDTHH:mm:ss');
-
-        // // Check if outTime is before inTime (e.g., for the next day)
-        // if (outTime.isBefore(inTime)) {
-        //   outTime.add(1, 'day'); // Add one day to outTime
-        // }
 
         const durationObject = moment.duration(outTime.diff(inTime));
         const hours = durationObject.hours();
@@ -99,9 +107,12 @@ export class TableComponent implements OnInit {
         dayOfWeek = 'Absent';
       }
 
-      result.push({ day: dayOfWeek, duration: duration });
+      result.push({
+        status: dateEntry.status,
+        duration: duration,
+        remarks: remarks,
+      });
     });
-    console.log('Result', result);
     return result;
   }
 

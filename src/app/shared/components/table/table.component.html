@@ -11,20 +11,20 @@
   <ng-template pTemplate="caption"> Header </ng-template>
   <ng-template pTemplate="header">
     <tr>
+      <th pFrozenColumn>Employee Name</th>
       <th>Department</th>
       <th>Employee Code</th>
-      <th>Employee Name</th>
+
       @for (item of getDateList();let i = $index; track i) {
-      <th>
-        <tr rowspan="2">
-          {{
-            item.date
-          }}
-        </tr>
-        <tr rowspan="2" class="day-hours-cell">
-          <th colspan="1">Day</th>
-          <th colspan="1">Hours</th>
-        </tr>
+      <th class="p-0">
+        <div class="table-head_date">
+          {{ item.date }}
+        </div>
+        <div class="table-head table-head_justify-center table-head_sub-head">
+          <div class="table-head_p-10 table-head_status">Status</div>
+          <div class="table-head_p-10 table-head_hrs">Hours</div>
+          <div class="table-head_p-10 table-head_remarks">Remarks</div>
+        </div>
       </th>
       } @empty {
       <th>Date</th>
@@ -33,15 +33,33 @@
   </ng-template>
   <ng-template pTemplate="body" let-data>
     <tr>
+      <td pFrozenColumn>{{ data?.employeeName }}</td>
       <td>{{ data?.department }}</td>
       <td>{{ data?.employeeCode }}</td>
-      <td>{{ data?.employeeName }}</td>
+
       @for (item of getDayAndDuration(data?.dateList);let i = $index; track i) {
-      <td colspan="1" class="day-hours-cell">
-        <tr>
-          <td>{{ item.day }}</td>
-          <td>{{ item.duration }}</td>
-        </tr>
+      <td
+        class="p-0"
+        [ngClass]="item.status === 'Absent' ? 'table-cell_absent' : ''"
+      >
+        <div
+          class="table-head table-head_sub-head"
+          [ngClass]="!item.duration && !item.remarks ? 'table-head_center' : ''"
+        >
+          <div class="table-head_p-10 table-head_status">{{ item.status }}</div>
+          @if (item.duration) {
+          <div class="table-head_p-10 table-head_status">
+            {{ item.duration }}
+          </div>
+          } @if ( item.remarks) {
+          <div
+            class="table-head_p-10 table-head_status"
+            [ngClass]="item.remarks === 'LC' ? 'table-cell_lc' : ''"
+          >
+            {{ item.remarks }}
+          </div>
+          }
+        </div>
       </td>
       }
     </tr>
