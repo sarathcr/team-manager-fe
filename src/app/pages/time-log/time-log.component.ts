@@ -27,7 +27,6 @@ export class TimeLogComponent<T extends { id: number }> {
     this.fileData = data;
     this.service.uploadFile(this.fileData, URL).subscribe({
       next: (res: any) => {
-        console.log('Time Log', res);
         this.tableData = res;
       },
     });
