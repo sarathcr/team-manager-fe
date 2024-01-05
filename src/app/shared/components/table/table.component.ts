@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TableDataModel } from '../../models/table-data.model';
 import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import * as xlsx from 'xlsx';
 
 @Component({
   selector: 'app-table',
@@ -20,6 +20,8 @@ export class TableComponent implements OnInit {
 
   public uniqueDateObjects: any[] = [];
   public index: number = 0;
+
+  private fileName = 'Timelog.xlsx';
 
   constructor() {}
 
@@ -133,16 +135,13 @@ export class TableComponent implements OnInit {
     return totalLateCount;
   }
 
-  public exportPdf() {
-    let DATA: any = document.getElementById('htmlData');
-    html2canvas(DATA).then((canvas) => {
-      let fileWidth = 208;
-      let fileHeight = (canvas.height * fileWidth) / canvas.width;
-      const FILEURI = canvas.toDataURL('image/png');
-      let PDF = new jsPDF('p', 'mm', 'a4');
-      let position = 0;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-      PDF.save('angular-demo.pdf');
-    });
+  public exportExcel() {
+    let data = document.getElementById('htmlData');
+    // import('xlsx').then((xlsx) => {
+    const worksheet = xlsx.utils.table_to_sheet(data);
+    const workbook = xlsx.utils.book_new();
+    xlsx.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    xlsx.writeFile(workbook, this.fileName);
+    // });
   }
 }
