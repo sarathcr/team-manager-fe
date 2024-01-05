@@ -1,18 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import moment from 'moment';
+import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TableDataModel } from '../../models/table-data.model';
-import { log } from 'console';
-import { CommonModule } from '@angular/common';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule, CommonModule],
+  imports: [TableModule, ButtonModule, CommonModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
 export class TableComponent implements OnInit {
+  @ViewChild('htmlData') htmlData!: ElementRef;
   @Input() tableData!: TableDataModel;
 
   public uniqueDateObjects: any[] = [];
@@ -62,14 +65,20 @@ export class TableComponent implements OnInit {
     return this.uniqueDateObjects;
   }
 
-  public getDayAndDuration(
-    dateList: any[]
-  ): { status: string; duration: string; remarks: string }[] {
+  public getDayAndDuration(dateList: any[]): {
+    status: string;
+    duration: string;
+    remarks: string;
+  }[] {
     if (!dateList || dateList.length === 0) {
       return [];
     }
 
-    const result: { status: string; duration: string; remarks: string }[] = [];
+    const result: {
+      status: string;
+      duration: string;
+      remarks: string;
+    }[] = [];
 
     dateList.forEach((dateEntry) => {
       let dayOfWeek = '';
@@ -113,10 +122,27 @@ export class TableComponent implements OnInit {
         remarks: remarks,
       });
     });
+
     return result;
   }
 
-  public incrementIndex() {
-    return ++this.index;
+  public getTotalLateCount(data: any) {
+    const totalLateCount = data.filter(
+      (item: any) => item.remarks === 'LC'
+    ).length;
+    return totalLateCount;
+  }
+
+  public exportPdf() {
+    let DATA: any = document.getElementById('htmlData');
+    html2canvas(DATA).then((canvas) => {
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;
+      const FILEURI = canvas.toDataURL('image/png');
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      let position = 0;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+      PDF.save('angular-demo.pdf');
+    });
   }
 }

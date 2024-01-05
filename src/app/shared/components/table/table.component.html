@@ -7,8 +7,20 @@
   scrollDirection="both"
   [paginator]="tableData ? true : false"
   [rows]="10"
+  id="htmlData"
 >
-  <ng-template pTemplate="caption"> Header </ng-template>
+  <ng-template pTemplate="caption">
+    <button
+      type="button"
+      pButton
+      pRipple
+      icon="pi pi-file-pdf"
+      (click)="exportPdf()"
+      class="p-button-warning mr-2"
+      pTooltip="PDF"
+      tooltipPosition="bottom"
+    ></button>
+  </ng-template>
   <ng-template pTemplate="header">
     <tr>
       <th pFrozenColumn>Employee Name</th>
@@ -16,7 +28,7 @@
       <th>Employee Code</th>
 
       @for (item of getDateList();let i = $index; track i) {
-      <th class="p-0">
+      <th class="p-0 table-head__cell">
         <div class="table-head_date">
           {{ item.date }}
         </div>
@@ -29,6 +41,7 @@
       } @empty {
       <th>Date</th>
       }
+      <th>Total Late Count</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-data>
@@ -62,6 +75,15 @@
         </div>
       </td>
       }
+      <td
+        [ngClass]="
+          getTotalLateCount(getDayAndDuration(data?.dateList)) > 0
+            ? 'table-cell_lc-total'
+            : ''
+        "
+      >
+        {{ getTotalLateCount(getDayAndDuration(data?.dateList)) }}
+      </td>
     </tr>
   </ng-template>
   <ng-template pTemplate="emptymessage">

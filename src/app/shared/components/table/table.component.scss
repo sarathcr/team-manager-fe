@@ -18,10 +18,8 @@
       font-size: 14px;
     }
     .p-datatable-wrapper {
-      // height: calc(100vh - 300px);
       height: calc(100vh - 287px);
       background-color: pantone(white);
-      // min-height: calc(100vh - 300px);
     }
   }
   &-head {
@@ -40,24 +38,23 @@
       justify-content: center;
     }
     &_sub-head {
-      margin-top: 5px;
-      display: flex;
-      // justify-content: space-evenly;
-      // display: grid;
-      // grid-template-columns: 1fr 1fr 2fr;
-      // grid-gap: 1rem;
-      // padding: 10px;
+      
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      width: 235px;
     }
-    // &_justify-center {
-    //   padding: 10px 5px;
-    // }
+   
   }
   &-cell {
     &_absent {
       background-color: rgba(color(absent), 0.5);
     }
     &_lc {
-      background-color: pantone(red);
+      color: pantone(red);
+      &-total {
+        font-size: 18px !important;
+        color: pantone(red) !important;
+      }
     }
   }
 }
