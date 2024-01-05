@@ -5,27 +5,38 @@
   [tableStyle]="{ 'min-width': '50rem' }"
   [scrollable]="true"
   scrollDirection="both"
-  [paginator]="tableData ? true : false"
-  [rows]="10"
   id="htmlData"
 >
   <ng-template pTemplate="caption">
-    <button
-      type="button"
-      pButton
-      pRipple
-      icon="pi pi-file-excel"
-      (click)="exportExcel()"
-      class="p-button-success mr-2"
-      pTooltip="XLS"
-      tooltipPosition="bottom"
-    ></button>
+    <div class="button-wrapper">
+      <button
+        type="button"
+        pButton
+        pRipple
+        icon="pi pi-file-excel"
+        (click)="exportExcel()"
+        class="p-button-success mr-2"
+        pTooltip="XLS"
+        tooltipPosition="bottom"
+      ></button>
+      <button
+        type="button"
+        pButton
+        pRipple
+        (click)="getNextDates()"
+        class="p-button-success mr-2"
+        pTooltip="Next 5 Dates"
+        tooltipPosition="bottom"
+      >
+        Next Week
+      </button>
+    </div>
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
       <th pFrozenColumn>Employee Name</th>
-      <th>Department</th>
-      <th>Employee Code</th>
+      <!-- <th>Department</th>
+      <th>Employee Code</th> -->
 
       @for (item of getDateList();let i = $index; track i) {
       <th class="p-0 table-head__cell">
@@ -33,9 +44,9 @@
           {{ item.date }}
         </div>
         <div class="table-head table-head_justify-center table-head_sub-head">
-          <div class="table-head_p-10 table-head_status">Status</div>
-          <div class="table-head_p-10 table-head_hrs">Hours</div>
-          <div class="table-head_p-10 table-head_remarks">Remarks</div>
+          <div class="table-head_p-10 table-head_status">Sts</div>
+          <div class="table-head_p-10 table-head_hrs">Hrs</div>
+          <div class="table-head_p-10 table-head_remarks">Rmrks</div>
         </div>
       </th>
       } @empty {
@@ -47,8 +58,8 @@
   <ng-template pTemplate="body" let-data>
     <tr>
       <td pFrozenColumn>{{ data?.employeeName }}</td>
-      <td>{{ data?.department }}</td>
-      <td>{{ data?.employeeCode }}</td>
+      <!-- <td>{{ data?.department }}</td>
+      <td>{{ data?.employeeCode }}</td> -->
 
       @for (item of getDayAndDuration(data?.dateList);let i = $index; track i) {
       <td
@@ -59,7 +70,9 @@
           class="table-head table-head_sub-head"
           [ngClass]="!item.duration && !item.remarks ? 'table-head_center' : ''"
         >
-          <div class="table-head_p-10 table-head_status">{{ item.status }}</div>
+          <div class="table-head_p-10 table-head_status">
+            {{ item.status.split("")[0] }}
+          </div>
           @if (item.duration) {
           <div class="table-head_p-10 table-head_status">
             {{ item.duration }}
@@ -76,6 +89,7 @@
       </td>
       }
       <td
+        class="table-head__center"
         [ngClass]="
           getTotalLateCount(getDayAndDuration(data?.dateList)) > 0
             ? 'table-cell_lc-total'

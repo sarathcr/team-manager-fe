@@ -3,9 +3,8 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import moment from 'moment';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
-import { TableDataModel } from '../../models/table-data.model';
-import html2canvas from 'html2canvas';
 import * as xlsx from 'xlsx';
+import { TableDataModel } from '../../models/table-data.model';
 
 @Component({
   selector: 'app-table',
@@ -20,6 +19,7 @@ export class TableComponent implements OnInit {
 
   public uniqueDateObjects: any[] = [];
   public index: number = 0;
+  public currentIndex: number = 0;
 
   private fileName = 'Timelog.xlsx';
 
@@ -64,7 +64,11 @@ export class TableComponent implements OnInit {
       }
     });
 
-    return this.uniqueDateObjects;
+    // Return only the first 5 dates
+    const filteredDates = this.uniqueDateObjects.filter(
+      (dateObject) => dateObject.status !== 'WeeklyOff'
+    );
+    return filteredDates.slice(this.currentIndex, this.currentIndex + 5);
   }
 
   public getDayAndDuration(dateList: any[]): {
@@ -111,7 +115,7 @@ export class TableComponent implements OnInit {
         const minutes = durationObject.minutes();
 
         dayOfWeek = moment(dateEntry.date).format('ddd');
-        duration = `${hours}h ${minutes}m`;
+        duration = `${hours}.${minutes}`;
       } else if (dateEntry.status === 'WeeklyOff') {
         dayOfWeek = 'WeeklyOff';
       } else if (dateEntry.status === 'Absent') {
@@ -125,7 +129,7 @@ export class TableComponent implements OnInit {
       });
     });
 
-    return result;
+    return result.slice(0, 5);
   }
 
   public getTotalLateCount(data: any) {
@@ -143,5 +147,11 @@ export class TableComponent implements OnInit {
     xlsx.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
     xlsx.writeFile(workbook, this.fileName);
     // });
+  }
+
+  public getNextDates() {
+    if (this.currentIndex + 5 < this.uniqueDateObjects.length) {
+      this.currentIndex += 5;
+    }
   }
 }

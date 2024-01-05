@@ -3,6 +3,8 @@
 
 .table {
   background: pantone(white);
+  display: block;
+  height: 100%;
   ::ng-deep {
     .p-datatable-header,
     .p-datatable-footer {
@@ -18,7 +20,7 @@
       font-size: 14px;
     }
     .p-datatable-wrapper {
-      height: calc(100vh - 287px);
+      height: calc(100vh - 245px);
       background-color: pantone(white);
     }
   }
@@ -38,12 +40,12 @@
       justify-content: center;
     }
     &_sub-head {
-      
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      width: 235px;
     }
-   
+    &__center {
+      text-align: center;
+    }
   }
   &-cell {
     &_absent {
@@ -61,4 +63,9 @@
 
 .p-0 {
   padding: 0;
+}
+
+.button-wrapper {
+  display: flex;
+  gap: 1rem;
 }
