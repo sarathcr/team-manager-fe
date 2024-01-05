@@ -3,13 +3,14 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import moment from 'moment';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import { TooltipModule } from 'primeng/tooltip';
 import * as xlsx from 'xlsx';
 import { TableDataModel } from '../../models/table-data.model';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule, ButtonModule, CommonModule],
+  imports: [TableModule, ButtonModule, TooltipModule, CommonModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
@@ -20,6 +21,9 @@ export class TableComponent implements OnInit {
   public uniqueDateObjects: any[] = [];
   public index: number = 0;
   public currentIndex: number = 0;
+  public startDate: Date = new Date();
+  public disableNextButton: Boolean = false;
+  public hasMoreDates: boolean = true;
 
   private fileName = 'Timelog.xlsx';
 
@@ -64,11 +68,20 @@ export class TableComponent implements OnInit {
       }
     });
 
-    // Return only the first 5 dates
+    // Filter dates excluding weekly offs
     const filteredDates = this.uniqueDateObjects.filter(
       (dateObject) => dateObject.status !== 'WeeklyOff'
     );
-    return filteredDates.slice(this.currentIndex, this.currentIndex + 5);
+
+    // Return the next or previous 5 dates based on the current index and start date
+    const slicedDates = filteredDates.slice(
+      this.currentIndex,
+      this.currentIndex + 5
+    );
+
+    const remainingDates = filteredDates.slice(this.currentIndex + 5);
+    this.hasMoreDates = remainingDates.length > 0;
+    return slicedDates;
   }
 
   public getDayAndDuration(dateList: any[]): {
@@ -128,8 +141,14 @@ export class TableComponent implements OnInit {
         remarks: remarks,
       });
     });
-
-    return result.slice(0, 5);
+    const filteredDates = result.filter(
+      (dateObject) => dateObject.status !== 'WeeklyOff'
+    );
+    const slicedResult = filteredDates.slice(
+      this.currentIndex,
+      this.currentIndex + 5
+    );
+    return slicedResult;
   }
 
   public getTotalLateCount(data: any) {
@@ -150,8 +169,15 @@ export class TableComponent implements OnInit {
   }
 
   public getNextDates() {
-    if (this.currentIndex + 5 < this.uniqueDateObjects.length) {
+    if (this.hasMoreDates) {
       this.currentIndex += 5;
+    }
+  }
+
+  public getPreviousDates() {
+    if (this.currentIndex - 5 >= 0) {
+      this.currentIndex -= 5;
+      this.startDate = this.uniqueDateObjects[this.currentIndex].date;
     }
   }
 }
