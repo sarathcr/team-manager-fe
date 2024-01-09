@@ -6,9 +6,12 @@ import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import * as xlsx from 'xlsx';
 import { TableDataModel } from '../../models/table-data.model';
-import html2canvas from 'html2canvas';
+import html2canvas, { Options } from 'html2canvas';
 import jsPDF from 'jspdf';
-
+import { log } from 'console';
+interface CustomHtml2CanvasOptions extends Partial<Options> {
+  dpi?: number;
+}
 @Component({
   selector: 'app-table',
   standalone: true,
@@ -26,8 +29,9 @@ export class TableComponent implements OnInit {
   public startDate: Date = new Date();
   public disableNextButton: Boolean = false;
   public hasMoreDates: boolean = true;
+  public department: string = '';
 
-  private fileName = 'Timelog.xlsx';
+  private fileName: string = '';
 
   constructor() {}
 
@@ -43,7 +47,7 @@ export class TableComponent implements OnInit {
     }
 
     this.uniqueDateObjects = [];
-
+    this.department = this.tableData.data[0].department;
     this.tableData.data.forEach((employee) => {
       if (employee.dateList) {
         employee.dateList.forEach((dateEntry) => {
@@ -83,6 +87,10 @@ export class TableComponent implements OnInit {
 
     const remainingDates = filteredDates.slice(this.currentIndex + 5);
     this.hasMoreDates = remainingDates.length > 0;
+    const startDate = slicedDates[0].date;
+    const endDate = slicedDates[slicedDates.length - 1].date;
+    this.fileName = `weekly-timelog-${this.department}-${startDate}-${endDate}`;
+
     return slicedDates;
   }
 
@@ -161,16 +169,43 @@ export class TableComponent implements OnInit {
   }
 
   public exportPdf() {
-    let DATA: any = document.getElementById('htmlData');
-    html2canvas(DATA).then((canvas) => {
-      let fileWidth = 208;
-      let fileHeight = (canvas.height * fileWidth) / canvas.width;
-      const FILEURI = canvas.toDataURL('image/png');
-      let PDF = new jsPDF('p', 'mm', 'a4');
-      let position = 0;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-      PDF.save('Weekly-timelog.pdf');
+    let DATA: any = document.querySelector('.p-datatable-wrapper');
+
+    var currentPosition = DATA?.scrollTop;
+    var w = DATA.offsetWidth;
+    var h = DATA.offsetHeight;
+    DATA.style.height = 'auto';
+
+    const html2canvasOptions: CustomHtml2CanvasOptions = {
+      dpi: 300,
+      scale: 1,
+      logging: true,
+    };
+
+    html2canvas(DATA, html2canvasOptions).then((canvas) => {
+      var imgData = canvas.toDataURL('image/jpeg', 1);
+      var pdf = new jsPDF('l', 'px', [w, h]);
+
+      // Split the content into chunks based on the height
+      var chunkHeight = 700; // Adjust this value based on your requirements
+      var totalHeight = canvas.height;
+      var currentPosition = 0;
+
+      while (currentPosition < totalHeight) {
+        var chunk = Math.min(chunkHeight, totalHeight - currentPosition);
+        pdf.addImage(imgData, 'JPEG', 0, -currentPosition, w, totalHeight);
+        currentPosition += chunk;
+
+        if (currentPosition < totalHeight) {
+          pdf.addPage();
+        }
+      }
+
+      pdf.save(`${this.fileName}`);
     });
+
+    DATA.style.height = '';
+    DATA.scrollTop = currentPosition;
   }
 
   public getNextDates() {
