@@ -68,4 +68,10 @@
 .button-wrapper {
   display: flex;
   gap: 1rem;
+  justify-content: space-between;
+}
+
+.btn-grp {
+  display: flex;
+  gap: 1rem;
 }

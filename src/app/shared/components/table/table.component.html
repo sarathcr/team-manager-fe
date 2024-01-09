@@ -13,36 +13,39 @@
         type="button"
         pButton
         pRipple
-        icon="pi pi-file-excel"
+        icon="pi pi-file-pdf"
         (click)="exportPdf()"
-        class="p-button-success mr-2"
-        pTooltip="PDF"
+        label="Export Pdf"
+        class="p-button-warning mr-2"
+        pTooltip="Export PDF"
         tooltipPosition="bottom"
       ></button>
-      <button
-        type="button"
-        pButton
-        pRipple
-        (click)="getPreviousDates()"
-        class="p-button-success mr-2"
-        pTooltip="Previous Week"
-        tooltipPosition="bottom"
-        [disabled]="currentIndex === 0"
-      >
-        Previous week
-      </button>
-      <button
-        type="button"
-        pButton
-        pRipple
-        [disabled]="!hasMoreDates"
-        (click)="getNextDates()"
-        class="p-button-success mr-2"
-        pTooltip="Next 5 Dates"
-        tooltipPosition="bottom"
-      >
-        Next Week
-      </button>
+      <div class="btn-grp">
+        <button
+          type="button"
+          pButton
+          pRipple
+          (click)="getPreviousDates()"
+          class="p-button-success mr-2"
+          pTooltip="Previous Week"
+          tooltipPosition="bottom"
+          [disabled]="currentIndex === 0"
+        >
+          Previous week
+        </button>
+        <button
+          type="button"
+          pButton
+          pRipple
+          [disabled]="!hasMoreDates"
+          (click)="getNextDates()"
+          class="p-button-success mr-2"
+          pTooltip="Next 5 Dates"
+          tooltipPosition="bottom"
+        >
+          Next Week
+        </button>
+      </div>
     </div>
   </ng-template>
   <ng-template pTemplate="header">
