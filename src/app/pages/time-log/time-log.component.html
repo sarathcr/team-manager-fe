@@ -1,7 +1,24 @@
 <app-page-title [title]="'Time log'"></app-page-title>
 <div class="file-upload-wrapper">
-  <app-file-upload (onUpload)="onUpload($event)"></app-file-upload>
-  <div class="time-log__table">
-    <app-table [tableData]="tableData"></app-table>
+  
+  @if(tableData?.data){
+  <app-table [tableData]="tableData"></app-table>
+  } @else {
+  <div class="time-log__empty-layout">
+    <p class="time-log__description">
+      Click the upload button to upload your csv or excel file for your weekly
+      timelog report
+    </p>
+    <p-button
+      (click)="showDialog()"
+      icon="pi pi-external-link"
+      label="Upload File"
+    ></p-button>
   </div>
+  <app-upload-file
+    (onClose)="hideDialog()"
+    [visible]="visible"
+    (onUpload)="onUpload($event)"
+  ></app-upload-file>
+  }
 </div>

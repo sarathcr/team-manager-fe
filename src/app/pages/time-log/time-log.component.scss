@@ -1,10 +1,29 @@
+@import "../../../styles/variables/_variable-master";
+
 .file-upload-wrapper {
-  height: 50px;
+  height: calc(100% - 52px);
 }
 
 .time-log {
   &__table {
     margin: 5px 0 0;
     height: calc(100vh - 170px);
+  }
+  &__empty-layout {
+    height: 100%;
+    width: 100%;
+    background-color: pantone(white);
+    border: 1px solid rgba(36, 36, 36, 0.1);
+    border-radius: 6px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  &__description {
+    color: #6b7280;
+    font-weight: 800;
   }
 }

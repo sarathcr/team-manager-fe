@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import html2canvas, { Options } from 'html2canvas';
+import jsPDF from 'jspdf';
 import moment from 'moment';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
-import * as xlsx from 'xlsx';
 import { TableDataModel } from '../../models/table-data.model';
-import html2canvas, { Options } from 'html2canvas';
-import jsPDF from 'jspdf';
-import { log } from 'console';
 interface CustomHtml2CanvasOptions extends Partial<Options> {
   dpi?: number;
 }
@@ -176,27 +174,22 @@ export class TableComponent implements OnInit {
     var h = DATA.offsetHeight;
     DATA.style.height = 'auto';
 
-    const html2canvasOptions: CustomHtml2CanvasOptions = {
-      dpi: 300,
-      scale: 1,
-      logging: true,
-    };
-
-    html2canvas(DATA, html2canvasOptions).then((canvas) => {
+    html2canvas(DATA).then((canvas) => {
       var imgData = canvas.toDataURL('image/jpeg', 1);
       var pdf = new jsPDF('l', 'px', [w, h]);
 
-      // Split the content into chunks based on the height
-      var chunkHeight = 700; // Adjust this value based on your requirements
+      // Dynamically calculate the chunk height based on content and available space
+      var chunkHeight = 0;
       var totalHeight = canvas.height;
-      var currentPosition = 0;
+      var remainingHeight = totalHeight;
 
-      while (currentPosition < totalHeight) {
-        var chunk = Math.min(chunkHeight, totalHeight - currentPosition);
-        pdf.addImage(imgData, 'JPEG', 0, -currentPosition, w, totalHeight);
-        currentPosition += chunk;
+      while (remainingHeight > 0) {
+        chunkHeight = Math.min(remainingHeight, h); // Adjust as needed
+        pdf.addImage(imgData, 'JPEG', 0, -currentPosition, w, chunkHeight);
+        currentPosition += chunkHeight;
+        remainingHeight -= chunkHeight;
 
-        if (currentPosition < totalHeight) {
+        if (remainingHeight > 0) {
           pdf.addPage();
         }
       }
