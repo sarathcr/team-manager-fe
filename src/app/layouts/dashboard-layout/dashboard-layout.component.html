@@ -1,4 +1,7 @@
 <div class="dashboard-layout">
+  @if (loading$ | async) {
+  <app-spinner></app-spinner>
+  }
   <div class="dashboard-layout__sidebar"><app-sidebar></app-sidebar></div>
   <div class="dashboard-layout__content"><router-outlet></router-outlet></div>
 </div>

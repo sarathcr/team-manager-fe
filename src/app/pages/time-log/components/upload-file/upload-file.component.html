@@ -1,0 +1,34 @@
+<div class="card flex justify-content-center">
+  <p-dialog
+    header="Drag or click to upload your file(xlsx / csv)"
+    [(visible)]="this.visible"
+    [style]="{ width: '50vw' }"
+    (onHide)="closeDialog()"
+    [modal]="true"
+  >
+    <div class="upload-file__area">
+      <div class="file-upload card flex justify-content-center">
+        <p class="file-upload__labelText">
+          @if (uploadedFile) { {{ uploadedFile.name }} } @else {Click or drop
+          here to upload file}
+        </p>
+
+        <input
+          class="file-upload__input"
+          type="file"
+          #fileDropRef
+          id="fileDropRef"
+          multiple
+          (change)="onFileLoadedFromInput($event.target)"
+        />
+      </div>
+    </div>
+    <div class="footer">
+      <p-button
+        (click)="onFileUpload()"
+        icon="pi pi-upload"
+        label="Submit"
+      ></p-button>
+    </div>
+  </p-dialog>
+</div>

@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { KeyValueMap } from '../models/common';
 import { StoreService } from './store.service';
 
 @Injectable({
@@ -15,7 +14,7 @@ export abstract class ApiService<T> {
     // extraData: KeyValueMap<any>,
     URL: string
   ): Observable<T> {
-    this.store.setIsLoading(true);
+    
     const formData = new FormData();
     formData.append('file', file);
 

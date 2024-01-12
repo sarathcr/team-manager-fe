@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppState, initialState } from '../models/state/common.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, distinctUntilChanged, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +23,15 @@ export class StoreService {
   public setIsLoading(isLoading: boolean) {
     this.state = { ...this.state, isLoading };
     this.updateStore();
+  }
+
+  // Selectors
+
+  public selectIsLoading(): Observable<boolean> {
+    return this.state$.pipe(
+      map((state) => state.isLoading),
+      distinctUntilChanged()
+    );
   }
 
   // PRIVATE
