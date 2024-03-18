@@ -1,7 +1,6 @@
 <app-page-title [title]="'Time log'"></app-page-title>
 <div class="file-upload-wrapper">
-  
-  @if(tableData?.data){
+  @if(tableData && tableData.data){
   <app-table [tableData]="tableData"></app-table>
   } @else {
   <div class="time-log__empty-layout">
