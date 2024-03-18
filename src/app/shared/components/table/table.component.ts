@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import html2canvas, { Options } from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -7,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { TableDataModel } from '../../models/table-data.model';
+import { CommonModule } from '@angular/common';
 interface CustomHtml2CanvasOptions extends Partial<Options> {
   dpi?: number;
 }
