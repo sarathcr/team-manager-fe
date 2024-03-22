@@ -1,25 +1,63 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import html2canvas, { Options } from 'html2canvas';
 import jsPDF from 'jspdf';
 import moment from 'moment';
 import { ButtonModule } from 'primeng/button';
+import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { TableDataModel } from '../../models/table-data.model';
-import { CommonModule } from '@angular/common';
+import { EventEmitter } from 'stream';
+import { log } from 'console';
 interface CustomHtml2CanvasOptions extends Partial<Options> {
   dpi?: number;
 }
+
+interface Leave {
+  name: string;
+  code: string;
+}
+
+export const LeaveOptions = [
+  { name: 'Absent', code: 'Absent' },
+  { name: 'CL', code: 'CL' },
+  { name: 'ML', code: 'ML' },
+  { name: 'WFH', code: 'WFH' },
+  { name: 'AL', code: 'AL' },
+  { name: 'LOP', code: 'LOP' },
+  { name: 'CO', code: 'CO' },
+  { name: 'BWL', code: 'BWL' },
+
+  { name: 'WeeklyOff', code: 'WeeklyOff' },
+];
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule, ButtonModule, TooltipModule, CommonModule],
+  imports: [
+    TableModule,
+    ButtonModule,
+    TooltipModule,
+    CommonModule,
+    DropdownModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
 export class TableComponent implements OnInit {
   @ViewChild('htmlData') htmlData!: ElementRef;
   @Input() tableData!: TableDataModel;
+  @Output() onUpdateLeave = new EventEmitter();
 
   public uniqueDateObjects: any[] = [];
   public index: number = 0;
@@ -28,14 +66,23 @@ export class TableComponent implements OnInit {
   public disableNextButton: Boolean = false;
   public hasMoreDates: boolean = true;
   public department: string = '';
+  public leaveOptions: Leave[] = LeaveOptions;
+  public selectedLeave!: Leave;
+  // public fGroup!: FormGroup;
 
   private fileName: string = '';
+  private payload: { [employeeCode: string]: any[] } = {};
 
   constructor() {}
 
   ngOnInit(): void {
+    // this.fGroup = new FormGroup({
+    //   leaveType: new FormControl(null, Validators.nullValidator),
+    // });
     if (this.tableData) {
       this.getDateList();
+
+      // this.department   = this.
     }
   }
 
@@ -212,5 +259,35 @@ export class TableComponent implements OnInit {
       this.currentIndex -= 5;
       this.startDate = this.uniqueDateObjects[this.currentIndex].date;
     }
+  }
+
+  // public getLeaveType(leave: string) {
+  //   this.selectedLeave = this.leaveOptions.find(
+  //     (option) => option.code === leave
+  //   )!;
+  // }
+
+  public onLeaveUpdate(item: any, index: number, event: DropdownChangeEvent) {
+    const leaveData = {
+      date: moment(item.dateList[index].date).format('DD-MM-YY'),
+      status: event.value.code,
+    };
+
+    const existingEmployee = this.payload[item.employeeCode];
+    if (existingEmployee) {
+      const existingLeaveIndex = existingEmployee.findIndex(
+        (leave: any) => leave.date === leaveData.date
+      );
+
+      if (existingLeaveIndex !== -1) {
+        existingEmployee[existingLeaveIndex].status = leaveData.status;
+      } else {
+        existingEmployee.push(leaveData);
+      }
+    } else {
+      this.payload[item.employeeCode] = [leaveData];
+    }
+
+    this.onUpdateLeave.emit(this.payload as any);
   }
 }

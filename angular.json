@@ -42,7 +42,8 @@
               "lodash",
               "file-saver",
               "moment",
-              "node-forge"
+              "node-forge",
+              "polyfills"
             ]
           },
           "configurations": {

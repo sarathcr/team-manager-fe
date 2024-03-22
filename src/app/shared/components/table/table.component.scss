@@ -23,6 +23,12 @@
       height: calc(100vh - 188px);
       background-color: pantone(white);
     }
+    .p-dropdown {
+      width: 100%;
+      border: none;
+      box-shadow: none;
+      outline: none;
+    }
   }
   &-head {
     &_p-10 {
@@ -49,7 +55,11 @@
   }
   &-cell {
     &_absent {
-      background-color: rgba(color(absent), 0.5);
+      .table-head_sub-head {
+        grid-template-columns: 1fr;
+      }
+
+      // background-color: rgba(color(absent), 0.5);
     }
     &_lc {
       color: pantone(red);

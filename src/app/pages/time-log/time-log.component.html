@@ -1,4 +1,18 @@
-<app-page-title [title]="'Time log'"></app-page-title>
+<div class="title-wrapper">
+  <app-page-title [title]="'Time log'"></app-page-title>
+  @if (tableData) {
+  <button
+    type="button"
+    pButton
+    pRipple
+    (click)="showDialog()"
+    class="p-button-success"
+  >
+    New Document
+  </button>
+
+  }
+</div>
 <div class="file-upload-wrapper">
   @if(tableData && tableData.data){
   <app-table [tableData]="tableData"></app-table>
@@ -9,15 +23,16 @@
       timelog report
     </p>
     <p-button
-      (click)="showDialog()"
+      (click)="onNewDocumentClickAction()"
       icon="pi pi-external-link"
       label="Upload File"
     ></p-button>
   </div>
+
+  }
   <app-upload-file
     (onClose)="hideDialog()"
     [visible]="visible"
     (onUpload)="onUpload($event)"
   ></app-upload-file>
-  }
 </div>

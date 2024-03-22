@@ -25,7 +25,7 @@ import { StoreService } from '../../core/services/store.service';
   providers: [TimeLogService],
 })
 export class TimeLogComponent<T extends { id: number }> {
-  public fileData!: File;
+  public fileData: File | null = null;
   public tableData!: TableDataModel;
   public visible: boolean = false;
 
@@ -43,6 +43,7 @@ export class TimeLogComponent<T extends { id: number }> {
     this.service.uploadFile(this.fileData, URL).subscribe({
       next: (res: any) => {
         this.tableData = res;
+        this.clearFileData();
         this.store.setIsLoading(false);
       },
     });
@@ -52,6 +53,18 @@ export class TimeLogComponent<T extends { id: number }> {
     this.visible = true;
   }
   public hideDialog() {
+    this.visible = false;
+  }
+
+  public clearTableData() {
+    this.tableData = { data: [], isSuccess: true, message: 'clear' };
+  }
+
+  public onNewDocumentClickAction() {
+    this.visible = true;
+  }
+
+  private clearFileData() {
     this.visible = false;
   }
 }

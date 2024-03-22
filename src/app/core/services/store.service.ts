@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { Injectable } from '@angular/core';
 import { AppState, initialState } from '../models/state/common.model';
 import { BehaviorSubject, Observable, distinctUntilChanged, map } from 'rxjs';
@@ -38,6 +39,8 @@ export class StoreService {
 
   private updateStore() {
     this.stateSource.next(this.state);
+    console.log('STATE_LOADING', this.state);
+
     this.saveStateToLocalStorage(this.state);
   }
 

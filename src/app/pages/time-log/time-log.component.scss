@@ -4,6 +4,12 @@
   height: calc(100% - 52px);
 }
 
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .time-log {
   &__table {
     margin: 5px 0 0;

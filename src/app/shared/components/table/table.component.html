@@ -86,10 +86,19 @@
           class="table-head table-head_sub-head"
           [ngClass]="!item.duration && !item.remarks ? 'table-head_center' : ''"
         >
+          @if(item.status === 'Absent'){
+          <p-dropdown
+            [options]="leaveOptions"
+            optionLabel="name"
+            (onChange)="onLeaveUpdate(data, i, $event)"
+          ></p-dropdown>
+
+          <!-- [(ngModel)]="selectedLeaveType" -->
+          }@else {
           <div class="table-head_p-10 table-head_status">
             {{ item.status.split("")[0] }}
           </div>
-          @if (item.duration) {
+          } @if (item.duration) {
           <div class="table-head_p-10 table-head_status">
             {{ item.duration }}
           </div>
