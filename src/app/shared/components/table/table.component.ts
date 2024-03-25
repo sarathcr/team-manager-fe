@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
   Output,
@@ -16,11 +17,6 @@ import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { TableDataModel } from '../../models/table-data.model';
-import { EventEmitter } from 'stream';
-import { log } from 'console';
-interface CustomHtml2CanvasOptions extends Partial<Options> {
-  dpi?: number;
-}
 
 interface Leave {
   name: string;
@@ -68,7 +64,6 @@ export class TableComponent implements OnInit {
   public department: string = '';
   public leaveOptions: Leave[] = LeaveOptions;
   public selectedLeave!: Leave;
-  // public fGroup!: FormGroup;
 
   private fileName: string = '';
   private payload: { [employeeCode: string]: any[] } = {};
@@ -76,13 +71,8 @@ export class TableComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    // this.fGroup = new FormGroup({
-    //   leaveType: new FormControl(null, Validators.nullValidator),
-    // });
     if (this.tableData) {
       this.getDateList();
-
-      // this.department   = this.
     }
   }
 
@@ -261,12 +251,6 @@ export class TableComponent implements OnInit {
     }
   }
 
-  // public getLeaveType(leave: string) {
-  //   this.selectedLeave = this.leaveOptions.find(
-  //     (option) => option.code === leave
-  //   )!;
-  // }
-
   public onLeaveUpdate(item: any, index: number, event: DropdownChangeEvent) {
     const leaveData = {
       date: moment(item.dateList[index].date).format('DD-MM-YY'),
@@ -287,7 +271,9 @@ export class TableComponent implements OnInit {
     } else {
       this.payload[item.employeeCode] = [leaveData];
     }
+  }
 
+  public onUpdateClick() {
     this.onUpdateLeave.emit(this.payload as any);
   }
 }

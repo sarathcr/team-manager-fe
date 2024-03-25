@@ -15,7 +15,10 @@
 </div>
 <div class="file-upload-wrapper">
   @if(tableData && tableData.data){
-  <app-table [tableData]="tableData"></app-table>
+  <app-table
+    [tableData]="tableData"
+    (onUpdateLeave)="onUpdate($event)"
+  ></app-table>
   } @else {
   <div class="time-log__empty-layout">
     <p class="time-log__description">

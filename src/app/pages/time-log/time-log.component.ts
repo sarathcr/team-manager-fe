@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
 import { EXPORT_EXCEL } from '../../core/constants/api';
+import { StoreService } from '../../core/services/store.service';
 import { FileUploadComponent } from '../../shared/components/file-upload/file-upload.component';
 import { PageTitleComponent } from '../../shared/components/page-title/page-title.component';
 import { TableComponent } from '../../shared/components/table/table.component';
-import { TimeLogService } from './services/time-log.service';
-import { log } from 'console';
 import { TableDataModel } from '../../shared/models/table-data.model';
-import { ButtonModule } from 'primeng/button';
 import { UploadFileComponent } from './components/upload-file/upload-file.component';
-import { StoreService } from '../../core/services/store.service';
+import { LeaveTypeModel } from './models/time-log.model';
+import { TimeLogService } from './services/time-log.service';
 
 @Component({
   selector: 'app-time-log',
@@ -64,6 +64,11 @@ export class TimeLogComponent<T extends { id: number }> {
     this.visible = true;
   }
 
+  public onUpdate(event: LeaveTypeModel[]) {
+    console.log('EVENT', event);
+  }
+
+  // PRIVATE EVENTS
   private clearFileData() {
     this.visible = false;
   }

@@ -6,3 +6,8 @@ export class TimeLog {
   outTime: string = '';
   status: string = '';
 }
+
+export type LeaveTypeModel = {
+  date: string;
+  status: string;
+};

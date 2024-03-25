@@ -25,6 +25,17 @@
           type="button"
           pButton
           pRipple
+          (click)="onUpdateClick()"
+          class="p-button mr-2"
+          pTooltip="Update leave type reffereing attendance sheet"
+          tooltipPosition="bottom"
+        >
+          Update Leave
+        </button>
+        <button
+          type="button"
+          pButton
+          pRipple
           (click)="getPreviousDates()"
           class="p-button-success mr-2"
           pTooltip="Previous Week"
